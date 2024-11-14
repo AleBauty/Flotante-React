@@ -1,14 +1,23 @@
-import { createContext, useContext } from 'react'
+import { createContext, useState, useContext } from 'react';
 
-const FavoritosContext = createContext()
+const FavoritosContext = createContext();
 
 export const FavoritosProvider = ({ children }) => {
-  /* Logica para mantener favoritos y las funciones para agregar y eliminar */
+  const [favoritos, setFavoritos] = useState([]);
+
+  const addFavorito = (receta) => {
+    setFavoritos([...favoritos, receta]);
+  };
+
+  const removeFavorito = (receta) => {
+    setFavoritos(favoritos.filter((r) => r.id !== receta.id));
+  };
+
   return (
-    <FavoritosContext.Provider value={{}}>
+    <FavoritosContext.Provider value={{ favoritos, addFavorito, removeFavorito }}>
       {children}
     </FavoritosContext.Provider>
-  )
-}
+  );
+};
 
-export const useFavoritos = () => useContext(FavoritosContext)
+export const useFavoritos = () => useContext(FavoritosContext);
